@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Карточка объекта недвижимости{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h1 class="h3 mb-1">{{ item.address }}</h1>
+    <p class="text-muted mb-0">Карточка объекта недвижимости.</p>
+  </div>
+  <a href="/real-estate/" class="btn btn-outline-secondary">Назад к списку</a>
+</div>
+
+<div class="card shadow-sm mb-4">
+  <div class="card-body">
+    <div class="row g-3">
+      <div class="col-md-6"><strong>Кадастровый номер:</strong> {{ item.cadastral_number or "—" }}</div>
+      <div class="col-md-3"><strong>Площадь:</strong> {{ item.area or "—" }}</div>
+      <div class="col-md-3"><strong>Этажность:</strong> {{ item.floors or "—" }}</div>
+      <div class="col-md-6"><strong>Назначение:</strong> {{ item.purpose or "—" }}</div>
+      <div class="col-md-6"><strong>Тип объекта:</strong> {{ item.object_type or "—" }}</div>
+    </div>
+  </div>
+</div>
+
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h2 class="h5">Связанные объекты отходов</h2>
+    <div class="table-responsive">
+      <table class="table table-hover mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>Наименование</th>
+            <th>Категория</th>
+            <th>ИНН</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for waste in item.waste_objects %}
+          <tr>
+            <td>{{ waste.name or "—" }}</td>
+            <td>{{ waste.category or "—" }}</td>
+            <td>{{ waste.inn or "—" }}</td>
+            <td><a href="/waste-objects/{{ waste.id }}">Открыть</a></td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="4" class="text-center text-muted py-4">Связанные объекты отсутствуют</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

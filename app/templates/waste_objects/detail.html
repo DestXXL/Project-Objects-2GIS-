@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Карточка объекта отходов{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h1 class="h3 mb-1">{{ item.name or "Без названия" }}</h1>
+    <p class="text-muted mb-0">Карточка объекта образования отходов.</p>
+  </div>
+  <a href="/waste-objects/" class="btn btn-outline-secondary">Назад к списку</a>
+</div>
+
+<div class="card shadow-sm mb-4">
+  <div class="card-body">
+    <div class="row g-3">
+      <div class="col-md-6"><strong>Категория:</strong> {{ item.category or "—" }}</div>
+      <div class="col-md-6"><strong>Вид отходов:</strong> {{ item.waste_type or "—" }}</div>
+      <div class="col-md-4"><strong>Норма образования:</strong> {{ item.waste_generation_norm or "—" }}</div>
+      <div class="col-md-4"><strong>Единица расчёта:</strong> {{ item.calculation_unit or "—" }}</div>
+      <div class="col-md-4"><strong>Значение расчёта:</strong> {{ item.calculation_value or "—" }}</div>
+      <div class="col-md-4"><strong>Как начисляется:</strong> {{ item.billing_method or "—" }}</div>
+      <div class="col-md-4"><strong>ИНН:</strong> {{ item.inn or "—" }}</div>
+      <div class="col-md-4"><strong>Номер договора:</strong> {{ item.contract_number or "—" }}</div>
+      <div class="col-md-4"><strong>Дата договора:</strong> {{ item.contract_date or "—" }}</div>
+      <div class="col-md-4"><strong>Дата начала действия:</strong> {{ item.contract_start_date or "—" }}</div>
+      <div class="col-md-8"><strong>Комментарий:</strong> {{ item.comment or "—" }}</div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4">
+  <div class="col-md-6">
+    <div class="card shadow-sm h-100">
+      <div class="card-body">
+        <h2 class="h5">Связанный объект недвижимости</h2>
+        <p class="mb-2">{{ item.real_estate.address }}</p>
+        <a href="/real-estate/{{ item.real_estate.id }}">Открыть карточку</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card shadow-sm h-100">
+      <div class="card-body">
+        <h2 class="h5">Связанное юридическое лицо</h2>
+        {% if item.legal_entity %}
+        <p class="mb-2">{{ item.legal_entity.name or "Без названия" }}<br><span class="text-muted">{{ item.legal_entity.inn }}</span></p>
+        <a href="/legal-entities/{{ item.legal_entity.id }}">Открыть карточку</a>
+        {% else %}
+        <p class="text-muted mb-0">Юридическое лицо не привязано.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

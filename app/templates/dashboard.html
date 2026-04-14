@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Сводка{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h1 class="h3 mb-1">Сводка</h1>
+    <p class="text-muted mb-0">Краткая статистика по загруженным данным.</p>
+  </div>
+  <a href="/import/" class="btn btn-primary">Импорт файла</a>
+</div>
+
+<div class="row g-4">
+  <div class="col-md-4">
+    <div class="card shadow-sm h-100">
+      <div class="card-body">
+        <div class="text-muted small mb-2">Объекты недвижимости</div>
+        <div class="display-6">{{ stats.real_estates }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card shadow-sm h-100">
+      <div class="card-body">
+        <div class="text-muted small mb-2">Объекты образования отходов</div>
+        <div class="display-6">{{ stats.waste_objects }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card shadow-sm h-100">
+      <div class="card-body">
+        <div class="text-muted small mb-2">Юридические лица</div>
+        <div class="display-6">{{ stats.legal_entities }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

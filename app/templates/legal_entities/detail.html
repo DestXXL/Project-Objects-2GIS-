@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Карточка юридического лица{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h1 class="h3 mb-1">{{ item.name or "Юридическое лицо" }}</h1>
+    <p class="text-muted mb-0">Карточка юридического лица.</p>
+  </div>
+  <a href="/legal-entities/" class="btn btn-outline-secondary">Назад к списку</a>
+</div>
+
+<div class="card shadow-sm mb-4">
+  <div class="card-body">
+    <div class="row g-3">
+      <div class="col-md-4"><strong>ИНН:</strong> {{ item.inn }}</div>
+      <div class="col-md-4"><strong>Контактное лицо:</strong> {{ item.contact_person or "—" }}</div>
+      <div class="col-md-4"><strong>Телефон:</strong> {{ item.phone or "—" }}</div>
+      <div class="col-md-6"><strong>Электронная почта:</strong> {{ item.email or "—" }}</div>
+      <div class="col-md-6"><strong>Наименование:</strong> {{ item.name or "—" }}</div>
+    </div>
+  </div>
+</div>
+
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h2 class="h5">Связанные объекты отходов</h2>
+    <div class="table-responsive">
+      <table class="table table-hover mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>Наименование</th>
+            <th>Категория</th>
+            <th>Адрес</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for waste in item.waste_objects %}
+          <tr>
+            <td><a href="/waste-objects/{{ waste.id }}">{{ waste.name or "—" }}</a></td>
+            <td>{{ waste.category or "—" }}</td>
+            <td>{{ waste.real_estate.address }}</td>
+            <td><a href="/real-estate/{{ waste.real_estate.id }}">Недвижимость</a></td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="4" class="text-center text-muted py-4">Связанные объекты отсутствуют</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Объекты образования отходов{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h1 class="h3 mb-1">Объекты образования отходов</h1>
+    <p class="text-muted mb-0">Поиск по наименованию, адресу и ИНН.</p>
+  </div>
+</div>
+
+<form method="get" class="row g-2 mb-3">
+  <div class="col-md-6">
+    <input class="form-control" type="search" name="q" value="{{ query }}" placeholder="Поиск по наименованию, адресу или ИНН">
+  </div>
+  <div class="col-auto">
+    <button class="btn btn-outline-primary" type="submit">Найти</button>
+  </div>
+</form>
+
+<div class="card shadow-sm">
+  <div class="table-responsive">
+    <table class="table table-hover mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>Наименование</th>
+          <th>Категория</th>
+          <th>Адрес</th>
+          <th>ИНН</th>
+          <th>Договор</th>
+          <th>Дата</th>
+          <th>Как начисляется</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in items %}
+        <tr>
+          <td><a href="/waste-objects/{{ item.id }}">{{ item.name or "—" }}</a></td>
+          <td>{{ item.category or "—" }}</td>
+          <td>{{ item.real_estate.address }}</td>
+          <td>{{ item.inn or "—" }}</td>
+          <td>{{ item.contract_number or "—" }}</td>
+          <td>{{ item.contract_date or "—" }}</td>
+          <td>{{ item.billing_method or "—" }}</td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="7" class="text-center text-muted py-4">Ничего не найдено</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

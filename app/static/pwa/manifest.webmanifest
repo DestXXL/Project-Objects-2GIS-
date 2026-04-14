@@ -1,0 +1,26 @@
+{
+  "name": "Реестр объектов недвижимости и отходов",
+  "short_name": "Реестр объектов",
+  "description": "Мини-приложение для учёта недвижимости, объектов отходов и юридических лиц.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f5f7fb",
+  "theme_color": "#1f2937",
+  "lang": "ru",
+  "icons": [
+    {
+      "src": "/static/icons/app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/static/icons/app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}
+

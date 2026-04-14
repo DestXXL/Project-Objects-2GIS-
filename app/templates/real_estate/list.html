@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Объекты недвижимости{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h1 class="h3 mb-1">Объекты недвижимости</h1>
+    <p class="text-muted mb-0">Поиск и просмотр карточек адресов.</p>
+  </div>
+</div>
+
+<form method="get" class="row g-2 mb-3">
+  <div class="col-md-6">
+    <input class="form-control" type="search" name="q" value="{{ query }}" placeholder="Поиск по адресу">
+  </div>
+  <div class="col-auto">
+    <button class="btn btn-outline-primary" type="submit">Найти</button>
+  </div>
+</form>
+
+<div class="card shadow-sm">
+  <div class="table-responsive">
+    <table class="table table-hover mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>Адрес</th>
+          <th>Связанных объектов отходов</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item, waste_count in items %}
+        <tr>
+          <td><a href="/real-estate/{{ item.id }}">{{ item.address }}</a></td>
+          <td>{{ waste_count }}</td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="2" class="text-center text-muted py-4">Ничего не найдено</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

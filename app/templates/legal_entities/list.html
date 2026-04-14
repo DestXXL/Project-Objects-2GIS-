@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Юридические лица{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h1 class="h3 mb-1">Юридические лица</h1>
+    <p class="text-muted mb-0">Поиск по ИНН и наименованию.</p>
+  </div>
+</div>
+
+<form method="get" class="row g-2 mb-3">
+  <div class="col-md-6">
+    <input class="form-control" type="search" name="q" value="{{ query }}" placeholder="Поиск по ИНН или названию">
+  </div>
+  <div class="col-auto">
+    <button class="btn btn-outline-primary" type="submit">Найти</button>
+  </div>
+</form>
+
+<div class="card shadow-sm">
+  <div class="table-responsive">
+    <table class="table table-hover mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>ИНН</th>
+          <th>Наименование</th>
+          <th>Связанных объектов отходов</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item, waste_count in items %}
+        <tr>
+          <td><a href="/legal-entities/{{ item.id }}">{{ item.inn }}</a></td>
+          <td>{{ item.name or "—" }}</td>
+          <td>{{ waste_count }}</td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="3" class="text-center text-muted py-4">Ничего не найдено</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
