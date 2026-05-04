@@ -11,8 +11,12 @@ import pandas as pd
 def normalize_text(value: object) -> Optional[str]:
     if value is None:
         return None
+    if isinstance(value, int):
+        return str(value)
     if isinstance(value, float) and math.isnan(value):
         return None
+    if isinstance(value, float) and value.is_integer():
+        return str(int(value))
     if pd.isna(value):
         return None
 
@@ -59,6 +63,26 @@ def normalize_inn(value: object) -> Optional[str]:
 
     digits = re.sub(r"\D+", "", text)
     return digits or None
+
+
+def split_normalized_inns(value: object) -> list[str]:
+    if value is None:
+        return []
+
+    if isinstance(value, str):
+        raw_parts = re.split(r"[|,;/]+", value)
+    else:
+        raw_parts = [value]
+
+    inns: list[str] = []
+    seen: set[str] = set()
+    for raw_part in raw_parts:
+        normalized = normalize_inn(raw_part)
+        if not normalized or normalized in seen:
+            continue
+        seen.add(normalized)
+        inns.append(normalized)
+    return inns
 
 
 def normalize_address_key(address: Optional[str]) -> Optional[str]:

@@ -17,7 +17,8 @@
   </div>
 </form>
 
-<div class="card shadow-sm">
+{% macro render_table(items, empty_text) %}
+<div class="card shadow-sm mb-4">
   <div class="table-responsive">
     <table class="table table-hover mb-0">
       <thead class="table-light">
@@ -39,16 +40,29 @@
           <td>{{ item.real_estate.address }}</td>
           <td>{{ item.inn or "—" }}</td>
           <td>{{ item.contract_number or "—" }}</td>
-          <td>{{ item.contract_date or "—" }}</td>
+          <td>{{ item.contract_date|date_ru or "—" }}</td>
           <td>{{ item.billing_method or "—" }}</td>
         </tr>
         {% else %}
         <tr>
-          <td colspan="7" class="text-center text-muted py-4">Ничего не найдено</td>
+          <td colspan="7" class="text-center text-muted py-4">{{ empty_text }}</td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
   </div>
 </div>
+{% endmacro %}
+
+<div class="mb-3">
+  <h2 class="h5 mb-1">Объекты с заполненными данными</h2>
+  <p class="text-muted mb-0">Здесь собраны объекты, по которым удалось подтянуть большую часть полезных сведений.</p>
+</div>
+{{ render_table(enriched_items, "В этой группе пока нет объектов") }}
+
+<div class="mb-3 mt-4">
+  <h2 class="h5 mb-1">Объекты, требующие дообогащения</h2>
+  <p class="text-muted mb-0">Здесь находятся объекты, по которым данных пока недостаточно и их стоит проверить вручную.</p>
+</div>
+{{ render_table(incomplete_items, "В этой группе пока нет объектов") }}
 {% endblock %}

@@ -7,11 +7,14 @@ from sqlalchemy import engine_from_config, pool
 
 from app.config import DATABASE_URL
 from app.db import Base
-from app.models import legal_entity, real_estate, waste_object  # noqa: F401
+from app.models import contract_row, legal_entity, real_estate, waste_object  # noqa: F401
 
 
 config = context.config
-config.set_main_option("sqlalchemy.url", DATABASE_URL)
+configured_url = config.get_main_option("sqlalchemy.url")
+if not configured_url or configured_url == "sqlite:///app.db":
+    configured_url = DATABASE_URL
+config.set_main_option("sqlalchemy.url", configured_url)
 
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
@@ -21,7 +24,7 @@ target_metadata = Base.metadata
 
 def run_migrations_offline() -> None:
     context.configure(
-        url=DATABASE_URL,
+        url=configured_url,
         target_metadata=target_metadata,
         literal_binds=True,
         compare_type=True,
@@ -49,4 +52,3 @@ if context.is_offline_mode():
     run_migrations_offline()
 else:
     run_migrations_online()
-

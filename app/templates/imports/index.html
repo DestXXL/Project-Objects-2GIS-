@@ -6,31 +6,18 @@
     <div class="card shadow-sm">
       <div class="card-body">
         <h1 class="h3 mb-3">Импорт Excel/CSV</h1>
-        <p class="text-muted">Поддерживаются файлы <code>.xlsx</code> и <code>.csv</code>. Основной файл импортируется в сущности системы, а файл договоров можно приложить для автоматического заполнения пустых полей.</p>
+        <p class="text-muted">Поддерживаются файлы <code>.xlsx</code> и <code>.csv</code>.</p>
         <form method="post" enctype="multipart/form-data" action="/import/">
           <div class="mb-3">
             <label for="file" class="form-label">Основной файл</label>
             <input class="form-control" type="file" id="file" name="file" accept=".xlsx,.csv" required>
           </div>
           <div class="mb-3">
-            <label for="contract_file" class="form-label">Файл договоров, опционально</label>
+            <label for="contract_file" class="form-label">Файл договоров</label>
             <input class="form-control" type="file" id="contract_file" name="contract_file" accept=".xlsx,.csv">
-            <div class="form-text">Если добавить файл договоров, система попробует обогатить записи по ИНН и адресу.</div>
           </div>
           <button class="btn btn-primary" type="submit">Загрузить и импортировать</button>
         </form>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-lg-6">
-    <div class="card shadow-sm h-100">
-      <div class="card-body">
-        <h2 class="h5 mb-3">Поддерживаемые поля</h2>
-        <p class="text-muted small">Можно использовать разные заголовки колонок. Для базы договоров уже настроены поля номера договора, даты, адреса объекта, контактного лица, объёма и периодичности вывоза.</p>
-        <div class="small">
-          <div><strong>Примеры:</strong> адрес / address, наименование организации, юридическое наименование, категория объекта по нормативу, ИНН, №, дата, адрес объекта.</div>
-        </div>
       </div>
     </div>
   </div>
@@ -75,9 +62,31 @@
       <div class="col-md-4"><div class="metric-box"><div class="metric-label">Создано объектов отходов</div><div class="metric-value">{{ result.waste_objects_created }}</div></div></div>
       <div class="col-md-4"><div class="metric-box"><div class="metric-label">Создано юрлиц</div><div class="metric-value">{{ result.legal_entities_created }}</div></div></div>
       <div class="col-md-4"><div class="metric-box"><div class="metric-label">Строк договоров загружено</div><div class="metric-value">{{ result.contracts_loaded }}</div></div></div>
-      <div class="col-md-4"><div class="metric-box"><div class="metric-label">Совпадений с договорами</div><div class="metric-value">{{ result.contracts_matched }}</div></div></div>
+      <div class="col-md-4"><div class="metric-box"><div class="metric-label">Строк договоров нашли пару в 2GIS</div><div class="metric-value">{{ result.contract_rows_matched }}</div></div></div>
+      <div class="col-md-4"><div class="metric-box"><div class="metric-label">Строк 2GIS с привязанным договором</div><div class="metric-value">{{ result.gis_rows_linked_to_contract }}</div></div></div>
+      <div class="col-md-4"><div class="metric-box"><div class="metric-label">Не сопоставлено с договорами</div><div class="metric-value">{{ result.contracts_unmatched }}</div></div></div>
       <div class="col-md-4"><div class="metric-box"><div class="metric-label">Пропущено строк</div><div class="metric-value">{{ result.skipped_rows }}</div></div></div>
     </div>
+
+    {% if result.contract_match_summary %}
+    <hr class="my-4">
+    <h3 class="h6">Как договоры были привязаны</h3>
+    <ul class="mb-0">
+      {% for label, count in result.contract_match_summary.items() %}
+      <li>{{ label }}: {{ count }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if result.contract_unmatched_summary %}
+    <hr class="my-4">
+    <h3 class="h6">Почему часть объектов не привязалась</h3>
+    <ul class="mb-0">
+      {% for reason, count in result.contract_unmatched_summary.items() %}
+      <li>{{ reason }}: {{ count }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
   </div>
 </div>
 {% endif %}

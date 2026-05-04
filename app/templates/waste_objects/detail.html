@@ -9,21 +9,89 @@
   <a href="/waste-objects/" class="btn btn-outline-secondary">Назад к списку</a>
 </div>
 
+{% if success_message %}
+<div class="alert alert-success">{{ success_message }}</div>
+{% endif %}
+{% if error_message %}
+<div class="alert alert-danger">{{ error_message }}</div>
+{% endif %}
+
 <div class="card shadow-sm mb-4">
   <div class="card-body">
     <div class="row g-3">
       <div class="col-md-6"><strong>Категория:</strong> {{ item.category or "—" }}</div>
       <div class="col-md-6"><strong>Вид отходов:</strong> {{ item.waste_type or "—" }}</div>
-      <div class="col-md-4"><strong>Норма образования:</strong> {{ item.waste_generation_norm or "—" }}</div>
-      <div class="col-md-4"><strong>Единица расчёта:</strong> {{ item.calculation_unit or "—" }}</div>
-      <div class="col-md-4"><strong>Значение расчёта:</strong> {{ item.calculation_value or "—" }}</div>
+      <div class="col-md-4"><strong>Объём:</strong> {{ item.calculation_value or "—" }}</div>
       <div class="col-md-4"><strong>Как начисляется:</strong> {{ item.billing_method or "—" }}</div>
       <div class="col-md-4"><strong>ИНН:</strong> {{ item.inn or "—" }}</div>
       <div class="col-md-4"><strong>Номер договора:</strong> {{ item.contract_number or "—" }}</div>
-      <div class="col-md-4"><strong>Дата договора:</strong> {{ item.contract_date or "—" }}</div>
-      <div class="col-md-4"><strong>Дата начала действия:</strong> {{ item.contract_start_date or "—" }}</div>
-      <div class="col-md-8"><strong>Комментарий:</strong> {{ item.comment or "—" }}</div>
+      <div class="col-md-4"><strong>Дата договора:</strong> {{ item.contract_date|date_ru or "—" }}</div>
     </div>
+  </div>
+</div>
+
+<div class="card shadow-sm mb-4">
+  <div class="card-body">
+    <h2 class="h5 mb-3">Редактирование и дополнение данных</h2>
+    <form method="post" action="/waste-objects/{{ item.id }}/edit">
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label">Наименование объекта</label>
+          <input type="text" class="form-control" name="name" value="{{ form_values.get('name', item.name or '') }}">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Категория</label>
+          <input type="text" class="form-control" name="category" value="{{ form_values.get('category', item.category or '') }}">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Вид отходов</label>
+          <input type="text" class="form-control" name="waste_type" value="{{ form_values.get('waste_type', item.waste_type or '') }}">
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Объём</label>
+          <input type="text" class="form-control" name="calculation_value" value="{{ form_values.get('calculation_value', item.calculation_value or '') }}">
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Как начисляется</label>
+          <input type="text" class="form-control" name="billing_method" value="{{ form_values.get('billing_method', item.billing_method or '') }}">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">ИНН</label>
+          <input type="text" class="form-control" name="inn" value="{{ form_values.get('inn', item.inn or '') }}">
+        </div>
+        <div class="col-md-8">
+          <label class="form-label">Наименование юридического лица</label>
+          <input type="text" class="form-control" name="legal_entity_name" value="{{ form_values.get('legal_entity_name', item.legal_entity.name if item.legal_entity else '') }}">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Контактное лицо</label>
+          <input type="text" class="form-control" name="contact_person" value="{{ form_values.get('contact_person', item.legal_entity.contact_person if item.legal_entity else '') }}">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Телефон</label>
+          <input type="text" class="form-control" name="phone" value="{{ form_values.get('phone', item.legal_entity.phone if item.legal_entity else '') }}">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Электронная почта</label>
+          <input type="text" class="form-control" name="email" value="{{ form_values.get('email', item.legal_entity.email if item.legal_entity else '') }}">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Номер договора</label>
+          <input type="text" class="form-control" name="contract_number" value="{{ form_values.get('contract_number', item.contract_number or '') }}">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Дата договора</label>
+          <input type="text" class="form-control" name="contract_date" placeholder="ДД.ММ.ГГГГ или YYYY-MM-DD" value="{{ form_values.get('contract_date', item.contract_date|date_ru or '') }}">
+        </div>
+        <div class="col-12">
+          <label class="form-label">Комментарий</label>
+          <textarea class="form-control" name="comment" rows="3">{{ form_values.get('comment', item.comment or '') }}</textarea>
+        </div>
+      </div>
+      <div class="mt-3">
+        <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+      </div>
+    </form>
   </div>
 </div>
 

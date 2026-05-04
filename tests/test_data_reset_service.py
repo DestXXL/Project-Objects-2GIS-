@@ -2,7 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
 from app.db import Base
-from app.models import LegalEntity, RealEstate, WasteObject
+from app.models import ContractRow, LegalEntity, RealEstate, WasteObject
 from app.services.data_reset_service import DataResetService
 
 
@@ -23,6 +23,16 @@ def test_data_reset_service_removes_imported_entities():
                 source_row_index=1,
             )
         )
+        session.flush()
+        session.add(
+            ContractRow(
+                source_row_index=2,
+                contract_number="Р/1",
+                waste_object_name="Объект по договору",
+                linked_waste_object_id=1,
+                link_mode="auto",
+            )
+        )
         session.commit()
 
         result = DataResetService().reset_all_imported_data(session)
@@ -33,3 +43,4 @@ def test_data_reset_service_removes_imported_entities():
         assert session.query(RealEstate).count() == 0
         assert session.query(WasteObject).count() == 0
         assert session.query(LegalEntity).count() == 0
+        assert session.query(ContractRow).count() == 0

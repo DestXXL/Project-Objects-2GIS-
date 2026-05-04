@@ -1,7 +1,8 @@
 from sqlalchemy import delete
 from sqlalchemy.orm import Session
 
-from app.models import LegalEntity, RealEstate, WasteObject
+from app.models import ContractRow, LegalEntity, RealEstate, WasteObject
+from app.repositories.contract_row_repository import ContractRowRepository
 from app.repositories.legal_entity_repository import LegalEntityRepository
 from app.repositories.real_estate_repository import RealEstateRepository
 from app.repositories.waste_object_repository import WasteObjectRepository
@@ -16,6 +17,7 @@ class DataResetService:
             legal_entities_deleted=LegalEntityRepository.count(db),
         )
 
+        db.execute(delete(ContractRow))
         db.execute(delete(WasteObject))
         db.execute(delete(LegalEntity))
         db.execute(delete(RealEstate))

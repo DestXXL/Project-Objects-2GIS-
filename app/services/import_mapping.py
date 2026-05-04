@@ -70,6 +70,13 @@ COLUMN_ALIASES: dict[str, list[str]] = {
     "waste_generation_norm": ["waste_generation_norm", "норма образования отходов"],
     "calculation_unit": ["calculation_unit", "единица расчета", "единица расчёта"],
     "calculation_value": ["calculation_value", "значение расчета", "значение расчёта", "объем", "объём"],
+    "billing_method": [
+        "billing_method",
+        "как начисляется",
+        "периодичность вывоза",
+        "период вывоза",
+        "график вывоза",
+    ],
     "inn": ["inn", "инн"],
     "inn_1": ["inn_1", "инн_1"],
     "inn_2": ["inn_2", "инн_2"],

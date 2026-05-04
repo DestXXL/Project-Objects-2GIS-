@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import date
+from datetime import date, datetime
 from typing import Optional
 
 import pandas as pd
@@ -9,6 +9,8 @@ import pandas as pd
 def parse_date(value: object) -> Optional[date]:
     if value is None or value == "":
         return None
+    if isinstance(value, datetime):
+        return value.date()
     if isinstance(value, date):
         return value
 

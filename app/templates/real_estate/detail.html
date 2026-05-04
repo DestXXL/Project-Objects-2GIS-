@@ -9,6 +9,13 @@
   <a href="/real-estate/" class="btn btn-outline-secondary">Назад к списку</a>
 </div>
 
+{% if success_message %}
+<div class="alert alert-success">{{ success_message }}</div>
+{% endif %}
+{% if error_message %}
+<div class="alert alert-danger">{{ error_message }}</div>
+{% endif %}
+
 <div class="card shadow-sm mb-4">
   <div class="card-body">
     <div class="row g-3">
@@ -18,6 +25,59 @@
       <div class="col-md-6"><strong>Назначение:</strong> {{ item.purpose or "—" }}</div>
       <div class="col-md-6"><strong>Тип объекта:</strong> {{ item.object_type or "—" }}</div>
     </div>
+  </div>
+</div>
+
+<div class="card shadow-sm mb-4">
+  <div class="card-body">
+    <h2 class="h5 mb-3">Редактирование и дополнение данных</h2>
+    <form method="post" action="/real-estate/{{ item.id }}/edit">
+      <div class="row g-3">
+        <div class="col-12">
+          <label class="form-label">Полный адрес</label>
+          <input type="text" class="form-control" name="address" value="{{ form_values.get('address', item.address or '') }}">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Район</label>
+          <input type="text" class="form-control" name="district" value="{{ form_values.get('district', item.district or '') }}">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Город / населённый пункт</label>
+          <input type="text" class="form-control" name="city" value="{{ form_values.get('city', item.city or '') }}">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Улица</label>
+          <input type="text" class="form-control" name="street" value="{{ form_values.get('street', item.street or '') }}">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Дом / помещение</label>
+          <input type="text" class="form-control" name="building" value="{{ form_values.get('building', item.building or '') }}">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Кадастровый номер</label>
+          <input type="text" class="form-control" name="cadastral_number" value="{{ form_values.get('cadastral_number', item.cadastral_number or '') }}">
+        </div>
+        <div class="col-md-2">
+          <label class="form-label">Площадь</label>
+          <input type="text" class="form-control" name="area" value="{{ form_values.get('area', item.area or '') }}">
+        </div>
+        <div class="col-md-2">
+          <label class="form-label">Этажность</label>
+          <input type="text" class="form-control" name="floors" value="{{ form_values.get('floors', item.floors or '') }}">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Назначение</label>
+          <input type="text" class="form-control" name="purpose" value="{{ form_values.get('purpose', item.purpose or '') }}">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Тип объекта</label>
+          <input type="text" class="form-control" name="object_type" value="{{ form_values.get('object_type', item.object_type or '') }}">
+        </div>
+      </div>
+      <div class="mt-3">
+        <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+      </div>
+    </form>
   </div>
 </div>
 
